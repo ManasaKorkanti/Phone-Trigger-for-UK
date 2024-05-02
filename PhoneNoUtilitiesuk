@@ -1,0 +1,84 @@
+public with sharing class PhoneNoUtilitiesuk {
+    public static String formatNumber(String phone){
+        String countryCode = '+44';
+        String newPhone = phone.replaceAll('\\D',''); // Remove all non-digit characters
+        
+        // Remove leading '0' if present
+        if (newPhone.startsWith('0')) {
+            newPhone = newPhone.substring(1);
+        }
+        
+        try {
+            // Check if it's a mobile number (starts with 7)
+            if (newPhone.startsWith('7')) {
+                // Format mobile numbers with country code and no area code
+                newPhone = countryCode + ' ' + newPhone.substring(0, 4) + ' ' + newPhone.substring(4);
+            } else if (newPhone.startsWith('2')) {
+                // Format landline numbers with country code and area code
+                newPhone = countryCode + ' ' + newPhone.substring(0, 2) + ' (' + newPhone.substring(2, 5) + ') ' + newPhone.substring(5);
+            } else if (isTollFree(newPhone)) {
+                // Check if it's a toll-free number
+                newPhone = countryCode + ' ' + newPhone.substring(0, 3) + ' ' + newPhone.substring(3);
+            } else if (isUKSpecialService(newPhone)) {
+                // Format special service numbers with country code and service prefix
+                newPhone = countryCode + ' ' + newPhone.substring(0, 3) + ' ' + newPhone.substring(3);
+            } else if (isUKLandline(newPhone)) {
+                // Format UK landline numbers with country code and area code
+                newPhone = countryCode + ' ' + newPhone.substring(0, 2) + ' (' + newPhone.substring(2, 5) + ') ' + newPhone.substring(5);
+            } else if (isUKVoIP(newPhone)) {
+                // Format UK VoIP service numbers with country code and service prefix
+                newPhone = countryCode + ' ' + newPhone.substring(0, 3) + ' ' + newPhone.substring(3);
+            } else {
+                // Handle other cases (assuming they are international numbers)
+                newPhone = '+' + newPhone;
+            }
+        } catch (Exception e) {
+            System.debug(e.getMessage());
+        }
+        return newPhone;
+    }
+    
+    // Method to check if the phone number is a toll-free number
+    public static Boolean isTollFree(String phoneNumber) {
+        List<String> tollFreePrefixes = new List<String>{'800', '808', '833', '844', '855', '866', '877', '888', '830', '840', '850'};
+        for(String prefix : tollFreePrefixes) {
+            if(phoneNumber.startsWith(prefix)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    // Method to check if the phone number is a UK special service number
+    public static Boolean isUKSpecialService(String phoneNumber) {
+        List<String> specialServicePrefixes = new List<String>{'303', '305', '306', '307', '308', '309', '500', '501', '502', '503', '504', '505', '506', '507', '508', '509', '550', '551', '552', '553', '554', '555', '556', '557', '558', '559', '700', '701', '702', '703', '704', '705', '706', '707', '708', '709', '800', '801', '802', '803', '804', '805', '806', '807', '808', '809', '900', '901', '902', '903', '904', '905', '906', '907', '908', '909'};
+        for(String prefix : specialServicePrefixes) {
+            if(phoneNumber.startsWith(prefix)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    // Method to check if the phone number is a UK landline number
+    public static Boolean isUKLandline(String phoneNumber) {
+        List<String> ukAreaCodes = new List<String>{'113', '114', '115', '116', '117', '118', '119', '12', '131', '141', '151', '161', '171', '181', '191'};
+        for(String areaCode : ukAreaCodes) {
+            if(phoneNumber.startsWith(areaCode)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    // Method to check if the phone number is a UK VoIP service number
+    public static Boolean isUKVoIP(String phoneNumber) {
+        List<String> voipPrefixes = new List<String>{'56', '57', '58'};
+        for(String prefix : voipPrefixes) {
+            if(phoneNumber.startsWith(prefix)) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
