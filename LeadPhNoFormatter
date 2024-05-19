@@ -1,18 +1,18 @@
-public class LeadPhNoFormatteruk {
-  public static Boolean isFirstTime = true;
+public class LeadPhNoFormatter {
+    public static Boolean isFirstTime = true;
     public static void mobileValidation(List<Lead> LeadList){
         try{
             list<Lead> updateLead = new list<Lead>();
             for (Lead c : LeadList){
                 Boolean change=false;
                 if(c.Phone != null){
-                    c.Phone=PhoneNoUtilitiesuk.formatNumber(c.Phone);
+                    c.Phone=PhoneNoUtilities.formatUKNumber(c.Phone);
                     change=true;
                 }
                 // Phone validation ends here
                 // Validation for MobilePhone starts here
                 if(c.MobilePhone != null){
-                    c.MobilePhone=PhoneNoUtilitiesuk.formatNumber(c.MobilePhone);
+                    c.MobilePhone=PhoneNoUtilities.formatUKNumber(c.MobilePhone);
                     change=true;
                 }
                 // Mobile Phone Validation ends here
