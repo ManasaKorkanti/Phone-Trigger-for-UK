@@ -1,0 +1,21 @@
+@isTest
+private class TestContactPhoneNoFormatter {
+  @isTest
+  private static void testInsertContact() {
+    List<CONTACT> cont = new List<CONTACT>();
+    Contact c1= new Contact ( lastNAME='CONTACT ABC', npe01__WorkPhone__c='+441386423456', MobilePhone='0 7581167819', HomePhone='44291234 1234');
+    cont.add(c1);
+    Contact c2 = new Contact (lastNAME='CONTACT DEF', npe01__WorkPhone__c=' 01386423456.', MobilePhone='441366123456', HomePhone='(+440 1136412345');
+    cont.add(c2);
+    Insert cont;
+    Contact c3= [SELECT NAME, npe01__WorkPhone__c, MobilePhone, HomePhone FROM CONTACT where Id=:c1.Id];
+    Contact c4= [SELECT NAME, npe01__WorkPhone__c, MobilePhone, HomePhone FROM CONTACT where Id=:c2.Id];
+   //Phone, NPSP will update Phone as Mobile Phone based on NPSP settings.
+    System.assertEquals('+44 13864 23456',c3.npe01__WorkPhone__c);
+    System.assertEquals('+44 7581 167819',c3.MobilePhone);
+    System.assertEquals('+44 29 1234 1234',c3.HomePhone);
+    System.assertEquals('+44 13864 23456',c4.npe01__WorkPhone__c);
+    System.assertEquals('+44 1366 123456',c4.MobilePhone);
+    System.assertEquals('+44 113 641 2345',c4.HomePhone);
+  }
+}
