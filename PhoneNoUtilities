@@ -3,20 +3,20 @@ public with sharing class PhoneNoUtilities {
         String countryCode='+44';
         String newPhone=phone;
         String ph='';
-        try{//(0808) 123 1234
-            phone = phone.deleteWhitespace().replaceAll('\\D','').replaceFirst( '^0+', '');//8081231234
+        try{
+            phone = phone.deleteWhitespace().replaceAll('\\D','').replaceFirst( '^0+', '');
             if (phone.startsWith('44')){
                 phone = phone.replaceFirst( '44', '').replaceFirst( '^0+', '');
             }
              ph = Phone;
             //8081231234
              if((ph.startsWith('800') || ph.startsWith('808'))  && ph.length()==10){
-                ph ='('+ 0 + ph.substring(0, 3)+')'+' '+ph.substring(3, 6)+' '+ph.substring(6, 10);//(0808) 123 1234
+                ph ='('+ 0 + ph.substring(0, 3)+')'+' '+ph.substring(3, 6)+' '+ph.substring(6, 10);//
                 newPhone = ph; 
                  
              } else if ((ph.startsWith('7') && ph.length()==10)){
                 ph = countryCode+' '+ph.substring(0, 4)+' '+ph.substring(4);
-               // +44 7581 167818
+              
                 newPhone = ph; 
                   system.debug(newPhone);
              
@@ -28,13 +28,13 @@ public with sharing class PhoneNoUtilities {
                      ph.startswith('117')|| ph.startswith('118')||ph.startswith('121')||
                       ph.startswith('131')|| ph.startswith('141') || ph.startswith('151')||
                       ph.startswith('161') || ph.startswith('191') ){
-                ph = countryCode + ' ' + ph.substring(0, 3) +' ' + ph.substring(3, 6)+' '+ph.substring(6, 10)  ;//+44 113 641 2345
+                ph = countryCode + ' ' + ph.substring(0, 3) +' ' + ph.substring(3, 6)+' '+ph.substring(6, 10)  ;//
                 newPhone = ph; 
       
            }else if( ph.startswith('12')|| ph.startswith('13') || ph.startswith('14')|| 
                      ph.startswith('15')|| ph.startswith('16') || ph.startswith('17') || ph.startswith('18') || 
                      ph.startswith('19')){
-                ph = countryCode + ' ' + ph.substring(0, 4) +' ' + ph.substring(4, 10)  ;//+44 1366 123456
+                ph = countryCode + ' ' + ph.substring(0, 4) +' ' + ph.substring(4, 10)  ;//
                 newPhone = ph; 
                          }else if(ph.startswith('20') || ph.startswith('23')|| ph.startswith('24') || ph.startswith('28')|| 
                       ph.startswith('29')){
